@@ -1,14 +1,24 @@
 import React from "react";
+import { neon } from "@neondatabase/serverless";
+import Copy from "@/components/Copy";
 
-export default function Page({ params }: { params: { id: string } }) {
+async function getData(id: string): Promise<string | null> {
+  const sql = neon(process.env.DATABASE_URL as string);
+  const response = await sql(`SELECT email FROM emails WHERE short_id = $1;`, [
+    id,
+  ]);
+  if (response.length === 0) {
+    return null;
+  }
+  return response[0].email;
+}
+export default async function Page({ params }: { params: { id: string } }) {
   const id = params.id;
+  const data = await getData(id);
   return (
     <main className="min-h-screen flex flex-col items-center justify-center">
-      Page:{id}
-      example@example.com
-      <button className="border block mx-auto rounded py-2 px-4 text-lg mt-6 bg-green-400 text-white">
-        COPY
-      </button>
+      {data}
+      <Copy data={data} />
     </main>
   );
 }
