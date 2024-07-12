@@ -24,7 +24,7 @@ export default async function Home() {
     );
     const id: string = res[0].short_id;
 
-    redirect(`/${id}`);
+    redirect(`/${id}?from=create`);
   }
   return (
     <main className="min-h-screen sm:p-24 flex flex-col items-center justify-center">
