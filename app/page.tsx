@@ -16,14 +16,14 @@ export default async function Home() {
     redirect(`/${id}`);
   }
   return (
-    <main className="min-h-screen p-24 flex flex-col items-center justify-center">
-      <form action={create}>
-        <div>
+    <main className="min-h-screen sm:p-24 flex flex-col items-center justify-center">
+      <form className="w-full" action={create}>
+        <div className="flex justify-center items-center text-lg">
           Email:
           <input
             name="email"
             required
-            className="ml-2 rounded p-2 w-[500px]"
+            className="ml-2 rounded p-2 sm:w-[500px]"
             type="email"
           />
         </div>

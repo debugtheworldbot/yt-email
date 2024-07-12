@@ -14,13 +14,14 @@ export default function Copy({ data }: { data: string | null }) {
       >
         COPY EMAIL
       </button>
+      <p className="text-lg font-medium mt-6">{window.location.href}</p>
       <button
         onClick={() => {
           const host = window.location.href;
           navigator.clipboard.writeText(host || "");
           setCopied({ link: true, email: false });
         }}
-        className="border block mx-auto rounded py-2 px-4 text-lg mt-6 bg-green-400 text-white"
+        className="border block mx-auto rounded py-2 px-4 text-lg mt-2 bg-green-400 text-white"
       >
         COPY SHARE LINK
       </button>
