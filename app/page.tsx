@@ -2,7 +2,6 @@ import { SubmitButton } from "@/components/Submit";
 import { neon } from "@neondatabase/serverless";
 import { redirect } from "next/navigation";
 
-const host = process.env.HOST || "http://localhost:3000";
 export default async function Home() {
   async function create(formData: FormData) {
     "use server";
@@ -14,7 +13,7 @@ export default async function Home() {
     );
     const id: string = res[0].short_id;
 
-    redirect(`${host}/${id}`);
+    redirect(`/${id}`);
   }
   return (
     <main className="min-h-screen p-24 flex flex-col items-center justify-center">
