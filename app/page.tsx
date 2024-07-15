@@ -28,34 +28,48 @@ export default async function Home() {
     redirect(`/${id}?from=create`);
   }
   return (
-    <main className="min-h-screen sm:p-24 flex flex-col items-center justify-center">
-      <Link
-        href="https://x.com/mws/status/1811816494529237248"
-        target="_blank"
-        className="text-2xl font-medium hover:underline"
-      >
-        YouTube removed your channel{"'"}s Business Email section.
-      </Link>
-      <h1 className="text-xl max-w-2xl mt-2">
-        Don{`'`}t worry. This site helps YouTubers manage their email and
-        <i className="font-medium"> avoid bots/scammers</i>.
-        Sponsors/advertisers can use it to find your email.
-      </h1>
-      <Link href="/ff92ee66" className="mb-6 text-lg">
-        demo email link: <span className="underline">mailof.me/ff92ee66</span>
-      </Link>
-      <form className="w-full" action={create}>
-        <div className="flex justify-center items-center text-lg">
-          Email:
-          <input
-            name="email"
-            required
-            className="ml-2 rounded p-2 sm:w-[500px]"
-            type="email"
-          />
+    <div className="min-h-screen sm:p-24 flex flex-col items-center justify-center">
+      <header>
+        <Link
+          href="https://x.com/mws/status/1811816494529237248"
+          target="_blank"
+          className="text-2xl font-medium hover:underline"
+        >
+          YouTube removed your channel{"'"}s Business Email section.
+        </Link>
+        <h1 className="text-xl max-w-2xl mt-2">
+          Don{`'`}t worry. This site helps YouTubers manage their email and
+          <i className="font-medium"> avoid bots/scammers</i>.
+          Sponsors/advertisers can use it to find your email.
+        </h1>
+        <div className="mb-6 text-center">
+          <Link
+            className="mr-6 underline"
+            target="_blank"
+            href="https://x.com/ZaneGallery/status/1812050989727527031"
+          >
+            Demo Video
+          </Link>
+          <Link href="/ff92ee66" className="text-lg">
+            Example email link:{" "}
+            <span className="underline">mailof.me/ff92ee66</span>
+          </Link>
         </div>
-        <SubmitButton />
-      </form>
-    </main>
+      </header>
+      <main>
+        <form className="w-full" action={create}>
+          <div className="flex justify-center items-center text-lg">
+            Email:
+            <input
+              name="email"
+              required
+              className="ml-2 rounded p-2 sm:w-[500px]"
+              type="email"
+            />
+          </div>
+          <SubmitButton />
+        </form>
+      </main>
+    </div>
   );
 }
