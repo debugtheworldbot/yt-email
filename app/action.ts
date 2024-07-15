@@ -1,9 +1,8 @@
 "use server";
 
 import { neon } from "@neondatabase/serverless";
-import { verify } from "hcaptcha";
 
-const secret = process.env.H_SECRET as string;
+const gSecret = process.env.G_SECRET as string;
 async function getData(id: string): Promise<string | null> {
   const sql = neon(process.env.DATABASE_URL as string);
   const response = await sql(`SELECT email FROM emails WHERE short_id = $1;`, [
@@ -14,14 +13,29 @@ async function getData(id: string): Promise<string | null> {
   }
   return response[0].email;
 }
-export const validateCaptchaToken = async (token: string, id: string) => {
+interface GoogleCaptchaResponse {
+  success: boolean;
+  challenge_ts: string; // timestamp of the challenge load (ISO format yyyy-MM-dd'T'HH:mm:ssZZ)
+  hostname: string; // the hostname of the site where the reCAPTCHA was solved
+  "error-codes"?: string[]; // optional
+}
+export const validateGoogleCaptchaToken = async (token: string, id: string) => {
   try {
     if (!token)
       return {
         message: "No token provided",
         success: false,
       };
-    const { success, "error-codes": errorCodes } = await verify(secret, token);
+    console.log(gSecret);
+    const data = await fetch(
+      `https://www.google.com/recaptcha/api/siteverify?secret=${gSecret}&response=${token}`,
+      {
+        method: "POST",
+      },
+    );
+    const res: GoogleCaptchaResponse = await data.json();
+
+    const { success, "error-codes": errorCodes } = res;
     if (!success) {
       return {
         message: "Invalid captcha" + JSON.stringify(errorCodes),
