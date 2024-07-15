@@ -1,26 +1,34 @@
-import React from "react";
-import { neon } from "@neondatabase/serverless";
-import Copy from "@/components/Copy";
+"use client";
+import React, { useRef, useState } from "react";
 import Link from "next/link";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
+import { validateCaptchaToken } from "../action";
 
-async function getData(id: string): Promise<string | null> {
-  const sql = neon(process.env.DATABASE_URL as string);
-  const response = await sql(`SELECT email FROM emails WHERE short_id = $1;`, [
-    id,
-  ]);
-  if (response.length === 0) {
-    return null;
-  }
-  return response[0].email;
-}
-export default async function Page({ params }: { params: { id: string } }) {
+export default function Page({ params }: { params: { id: string } }) {
   const id = params.id;
-  const data = await getData(id);
-  if (!data) return <main className="min-h-screen">not found</main>;
+  const captchaRef = useRef<HCaptcha>(null);
+  const [email, setEmail] = useState<string>("");
+  const showCaptcha = () => {
+    captchaRef.current?.execute();
+  };
+
+  const onVerify = async (token: string) => {
+    console.log("onVerify", token);
+    const { email, success, message } = await validateCaptchaToken(token, id);
+    email && setEmail(email);
+    console.log(success, email, message);
+  };
+  // if (!data) return <main className="min-h-screen">not found</main>;
   return (
     <main className="relative min-h-screen flex flex-col items-center justify-center">
-      <p className="text-lg font-medium">{data}</p>
-      <Copy data={data} />
+      {email && <p className="text-lg font-medium">{email}</p>}
+      <HCaptcha
+        sitekey="e274430e-2a4a-4a26-b45a-820a61825334"
+        onVerify={onVerify}
+        ref={captchaRef}
+      />
+      <button onClick={showCaptcha}>show email</button>
+      {/* <Copy data={data} /> */}
 
       <Link className="absolute bottom-4" href="/">
         Create new
