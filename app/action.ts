@@ -26,7 +26,6 @@ export const validateGoogleCaptchaToken = async (token: string, id: string) => {
         message: "No token provided",
         success: false,
       };
-    console.log(gSecret);
     const data = await fetch(
       `https://www.google.com/recaptcha/api/siteverify?secret=${gSecret}&response=${token}`,
       {
