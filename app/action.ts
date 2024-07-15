@@ -3,7 +3,7 @@
 import { neon } from "@neondatabase/serverless";
 import { verify } from "hcaptcha";
 
-const secret = process.env.H_SESRET as string;
+const secret = process.env.H_SECRET as string;
 async function getData(id: string): Promise<string | null> {
   const sql = neon(process.env.DATABASE_URL as string);
   const response = await sql(`SELECT email FROM emails WHERE short_id = $1;`, [
@@ -21,9 +21,12 @@ export const validateCaptchaToken = async (token: string, id: string) => {
         message: "No token provided",
         success: false,
       };
-    const { success } = await verify(secret, token);
+    const { success, "error-codes": errorCodes } = await verify(secret, token);
     if (!success) {
-      return { message: "Invalid captcha", success: false };
+      return {
+        message: "Invalid captcha" + JSON.stringify(errorCodes),
+        success: false,
+      };
     }
 
     const email = await getData(id);

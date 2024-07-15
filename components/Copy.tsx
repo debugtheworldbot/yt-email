@@ -9,6 +9,7 @@ export default function Copy({ data }: { data: string | null }) {
     setFromCreate(window.location.search.includes("from=create"));
   }, []);
 
+  if (!data) return null;
   return (
     <div>
       <button
