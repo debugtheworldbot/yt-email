@@ -28,7 +28,7 @@ export default async function Home() {
     redirect(`/${id}?from=create`);
   }
   return (
-    <div className="min-h-screen sm:p-24 flex flex-col items-center justify-center">
+    <div className="min-h-screen p-4 sm:p-24 flex flex-col items-center justify-center">
       <header>
         <Link
           href="https://x.com/mws/status/1811816494529237248"
